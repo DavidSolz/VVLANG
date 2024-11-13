@@ -17,7 +17,7 @@ fi
 BUILD_DIR="build"
 
 echo "Fetching submodules..."
-git submodule update --init --recursive || { echo "Failed to update submodules."; exit 1; }
+git submodule update --init --recursive --remote || { echo "Failed to update submodules."; exit 1; }
 
 if [ ! -d "$BUILD_DIR" ]; then
     mkdir "$BUILD_DIR"
