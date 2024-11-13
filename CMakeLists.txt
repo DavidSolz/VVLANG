@@ -11,6 +11,8 @@ find_package(OpenGL REQUIRED)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/imgui)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/glfw)
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/tinyjson)
+
 
 file(GLOB_RECURSE SOURCES
     ${PROJECT_SOURCE_DIR}/src/*.cpp
@@ -22,6 +24,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         glfw
         imgui
+        tinyjson
         ${OPENGL_LIBRARIES}
 )
 
@@ -30,5 +33,6 @@ target_include_directories(${PROJECT_NAME}
         ${PROJECT_SOURCE_DIR}/include
         ${PROJECT_SOURCE_DIR}/lib/imgui
         ${PROJECT_SOURCE_DIR}/lib/glfw
+        ${PROJECT_SOURCE_DIR}/lib/tinyjson
         ${GLFW_INCLUDE_DIRS}
 )

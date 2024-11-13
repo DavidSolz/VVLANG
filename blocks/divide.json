@@ -1,0 +1,21 @@
+{
+    "label": "Divide",
+    "type": "operator",
+    "numInputs": 2,
+    "inputTypes": [
+        "generic",
+        "generic"
+    ],
+    "numOutputs": 1,
+    "outputTypes": [
+        "generic"
+    ],
+    "codes": [
+        {
+            "CXX": "{placeholder_1} / {placeholder_2}"
+        },
+        {
+            "PYTHON": "{placeholder_1} / {placeholder_2}"
+        }
+    ]
+}

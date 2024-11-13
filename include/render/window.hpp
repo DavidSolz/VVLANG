@@ -7,8 +7,10 @@
     #include <GL/gl.h>
 #elif __APPLE__
     #include <OpenGL/gl3.h>
-#else
+#elif __linux__
     #include <GL/glx.h>
+#else
+    #error "Platform does not match"
 #endif
 
 #include <string>
