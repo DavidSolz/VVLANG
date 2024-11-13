@@ -1,5 +1,5 @@
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
+#ifndef VIEWPORT_HPP
+#define VIEWPORT_HPP
 
 #define GL_SILENCE_DEPRECATION
 
@@ -18,7 +18,7 @@
 #include <functional>
 #include <iostream>
 
-class Window
+class Viewport
 {
 private:
     size_t width;
@@ -31,7 +31,7 @@ private:
 
 public:
 
-    Window(const size_t &width = 800, const size_t &height = 600, const std::string &title = "Application");
+    Viewport(const size_t &width = 800, const size_t &height = 600, const std::string &title = "Application");
 
     const bool shouldClose() const;
 
@@ -47,7 +47,7 @@ public:
 
     const float getAspectRatio() const;
 
-    ~Window();
+    ~Viewport();
 };
 
 #endif
