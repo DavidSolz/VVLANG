@@ -1,7 +1,7 @@
 #ifndef SMARTVECTOR_H
 #define SMARTVECTOR_H
 
-#include "GUID.cpp"
+#include "guid.hpp"
 
 #include <memory>
 #include <cstring>
