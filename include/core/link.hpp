@@ -3,12 +3,12 @@
 
 #include <cstdint>
 
+#include "id_pair.hpp"
+
 struct link
 {
-    int32_t from;
-    int32_t to;
-    // placeholder for input slots
-    // placeholder for output slots
+    id_pair from;
+    id_pair to;
 };
 
 #endif

@@ -1,107 +1,68 @@
 #include "core/graph.hpp"
 
-void Graph::add_node(const node &node)
+bool Graph::checkNodeValidity(const id_pair &pair) const
 {
+    auto selectedNode = nodes.find(pair.parent);
 
-    auto it = nodes.find(node.guid);
-
-    if (it != nodes.end())
+    if (selectedNode == nodes.end())
     {
-        return;
+        std::cerr << "Error: Node " + std::to_string(pair.parent) + " does not exist in graph context" << std::endl;
+        return false;
     }
 
-    nodes[node.guid] = node;
-}
-
-void Graph::remove_node(const node &node)
-{
-
-    auto it = nodes.find(node.guid);
-
-    if (it == nodes.end())
+    if (pair.child < 0 or pair.child > selectedNode->second.draft->numInput)
     {
-        return;
+        std::cerr << "Error: Invalid slot inside node " + std::to_string(pair.parent) << std::endl;
+        return false;
     }
 
-    nodes.erase(it);
+    return true;
 }
 
-void Graph::add_link(const int32_t &from, const int32_t &to)
+void Graph::setTypeDeductionPolicy(const deduction_type &mode)
 {
-    if (!check_if_exist(from) or !check_if_exist(to))
+    policy.setMode(mode);
+}
+
+void Graph::addNode(node_draft *draft)
+{
+    int32_t guid = nodeCounter++;
+
+    node newNode = (node){guid, Vector2(), draft};
+
+    newNode.input.resize(draft->numInput);
+    newNode.output.resize(draft->numOutput);
+
+    nodes[guid] = newNode;
+}
+
+bool Graph::linkRequest(const id_pair &from, const id_pair &to)
+{
+
+    if (checkNodeValidity(from) == false or checkNodeValidity(to) == false)
     {
-        return;
+        std::cerr << "Error: Invalid link" << std::endl;
+        return false;
     }
 
-    link edge = (link){from, to};
-    links.push_back(edge);
-}
+    node &first = nodes[from.parent];
+    node &second = nodes[to.parent];
 
-bool Graph::check_if_exist(const node &node) const
-{
-    auto it = nodes.find(node.guid);
-    return it != nodes.end();
-}
+    slot_type deducedType = policy.deduceType(first.draft->possibleTypes, second.draft->possibleTypes);
 
-bool Graph::check_if_exist(const int32_t &node_id) const
-{
-    auto it = nodes.find(node_id);
-    return it != nodes.end();
-}
-
-std::vector<link> Graph::get_links(const node &node) const
-{
-    std::vector<link> result;
-
-    if (!check_if_exist(node))
+    if (deducedType == policy.getDefaultType())
     {
-        return result;
+        std::cerr << "Error: no compatible types found." << std::endl;
+        return false;
     }
 
-    for (const auto &link : links)
-    {
-        if (node.guid == link.from or node.guid == link.to)
-        {
-            result.push_back(link);
-        }
-    }
+    first.output[from.child].type = deducedType;
+    second.input[to.child].type = deducedType;
 
-    return result;
-}
+    link l = (link){from, to};
 
-std::vector<link> Graph::get_links(const int32_t & node_id) const
-{
-    std::vector<link> result;
+    links[from.parent].push_back(l);
+    // links[to.parent].push_back(l); // Need to consider if edge must be bi-directional
 
-    if (!check_if_exist(node_id))
-    {
-        return result;
-    }
-
-    for (const auto &link : links)
-    {
-        if (node_id == link.from or node_id == link.to)
-        {
-            result.push_back(link);
-        }
-    }
-
-    return result;
-}
-
-std::vector<node> Graph::get_nodes() const
-{
-    std::vector<node> result;
-
-    for( auto [key, value] : nodes)
-    {
-        result.push_back(value);
-    }
-
-    return result;
-}
-
-std::vector<link> &Graph::get_links()
-{
-    return links;
+    return true;
 }

@@ -1,7 +1,7 @@
 #ifndef SLOT_TYPE_HPP
 #define SLOT_TYPE_HPP
 
-#define SLOT_TYPE_STR {"generic", "byte", "integer", "short", "long", "float", "double", "ubyte", "uinteger", "ushort", "ulong", "vec2", "vec4", "vec8"}
+#define SLOT_TYPE_STR {"generic", "byte", "integer", "short", "long", "float", "double", "ubyte", "uinteger", "ushort", "ulong", "string", "vec2", "vec4", "vec8"}
 
 enum slot_type
 {
@@ -23,6 +23,7 @@ enum slot_type
     ULONG,
 
     /* VECTOR */
+    STRING,
     FLOAT2,
     FLOAT4,
     FLOAT8,

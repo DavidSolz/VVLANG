@@ -84,28 +84,12 @@ node_draft NodeDraftParser::parseDraft(const tinyjson::element &json) const
 
     if (json.contains("Inputs"))
     {
-        if (json["Inputs"].as_number<int32_t>(&draft.numInput) && draft.numInput >= 0)
-        {
-            draft.input.resize(draft.numInput);
-        }
-        else
-        {
-            std::cerr << "Warning: Invalid or negative 'Inputs' count in JSON." << std::endl;
-            return node_draft{};
-        }
+        json["Inputs"].as_number<int32_t>(&draft.numInput);
     }
 
     if (json.contains("Outputs"))
     {
-        if (json["Outputs"].as_number<int32_t>(&draft.numOutput) && draft.numOutput >= 0)
-        {
-            draft.output.resize(draft.numOutput);
-        }
-        else
-        {
-            std::cerr << "Warning: Invalid or negative 'Outputs' count in JSON." << std::endl;
-            return node_draft{};
-        }
+        json["Outputs"].as_number<int32_t>(&draft.numOutput);
     }
 
     if (json.contains("Types"))

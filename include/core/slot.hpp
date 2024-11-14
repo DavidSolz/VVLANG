@@ -8,8 +8,8 @@
 struct slot
 {
     int32_t id;
-    std::string name;
     slot_type type;
+    std::string name;
 };
 
 

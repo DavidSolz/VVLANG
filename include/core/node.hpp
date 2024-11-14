@@ -5,14 +5,15 @@
 #include <cstdint>
 
 #include "vector2.hpp"
+#include "node_draft.hpp"
 
 struct node
 {
-    int32_t guid;
+    int32_t id;
     Vector2 position;
-    std::string name;
-    // placeholder for input slots
-    // placeholder for output slots
+    node_draft *draft;
+    std::vector<slot> input;
+    std::vector<slot> output;
 };
 
 #endif

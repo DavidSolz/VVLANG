@@ -1,42 +1,36 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
+#include <iostream>
+#include <list>
 #include <unordered_map>
-#include <vector>
 
 #include "node.hpp"
 #include "link.hpp"
+#include "deduction_policy.hpp"
 
 class Graph
 {
 private:
-    std::unordered_map<uint32_t, node> nodes;
-    std::vector<link> links;
+    std::unordered_map<int32_t, node> nodes;
+    std::unordered_map<int32_t, std::list<link> > links;
+
+    DeductionPolicy policy;
+
+    int32_t nodeCounter;
 
     Graph(const Graph &graph) = delete;
 
-public:
+    bool checkNodeValidity(const id_pair & pair) const;
 
+public:
     Graph() = default;
 
-    void add_node(const node & node);
+    void addNode(node_draft *draft);
 
-    void remove_node(const node & node);
+    void setTypeDeductionPolicy(const deduction_type & mode);
 
-    void add_link(const int32_t & from, const int32_t & to);
-
-    bool check_if_exist(const node & node) const;
-
-    bool check_if_exist(const int32_t & node_id) const;
-
-    std::vector<link> get_links(const node & node) const;
-
-    std::vector<link> get_links(const int32_t & node_id) const;
-
-    std::vector<node> get_nodes() const;
-
-    std::vector<link> &get_links();
-
+    bool linkRequest(const id_pair &from, const id_pair &to);
 };
 
 #endif

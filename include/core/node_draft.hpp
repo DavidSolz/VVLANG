@@ -12,8 +12,6 @@ struct node_draft
     int32_t numInput;
     int32_t numOutput;
     std::vector<slot_type> possibleTypes;
-    std::vector<slot> input;
-    std::vector<slot> output;
 };
 
 #endif
