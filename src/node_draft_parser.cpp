@@ -1,20 +1,18 @@
 #include "core/node_draft_parser.hpp"
 
-void NodeDraftParser::parseArray(slot *array, const size_t &size, const tinyjson::element &json) const
+void NodeDraftParser::parseArray(std::vector<slot_type> &array, const tinyjson::element &json) const
 {
-    if (json.is_array() == false or json.size() < size)
+    if (json.is_array() == false or json.size() < 1)
     {
-        std::cerr << "Warning: Input types array size does not match numInputs" << std::endl;
+        std::cerr << "Warning: Types array size is empty" << std::endl;
         return;
     }
 
-    int32_t overlapSize = std::max(static_cast<size_t>(0), std::min(json.size(), size));
-
     std::string type;
-    for (int32_t i = 0; i < overlapSize; i++)
+    for (int32_t i = 0; i < json.size(); i++)
     {
         json[i].as_str(&type);
-        array[i].type = parseSlotType(type);
+        array.push_back(parseSlotType(type));
     }
 }
 
@@ -66,21 +64,21 @@ node_draft NodeDraftParser::parseDraft(const tinyjson::element &json) const
         return draft;
     }
 
-    if (json.contains("label"))
+    if (json.contains("Label"))
     {
-        json["label"].as_str(&draft.name);
+        json["Label"].as_str(&draft.name);
     }
 
-    if (json.contains("type"))
+    if (json.contains("Type"))
     {
         std::string type;
-        json["type"].as_str(&type);
+        json["Type"].as_str(&type);
         draft.type = parseNodeType(type);
     }
 
-    if (json.contains("numInputs"))
+    if (json.contains("Inputs"))
     {
-        json["numInputs"].as_number<int32_t>(&draft.numInput);
+        json["Inputs"].as_number<int32_t>(&draft.numInput);
 
         if (draft.numInput < 0)
         {
@@ -89,12 +87,12 @@ node_draft NodeDraftParser::parseDraft(const tinyjson::element &json) const
             return draft;
         }
 
-        draft.input = new slot[draft.numInput];
+        draft.input.resize(draft.numInput);
     }
 
-    if (json.contains("numOutputs"))
+    if (json.contains("Outputs"))
     {
-        json["numOutputs"].as_number<int32_t>(&draft.numOutput);
+        json["Outputs"].as_number<int32_t>(&draft.numOutput);
 
         if (draft.numOutput < 0)
         {
@@ -103,19 +101,14 @@ node_draft NodeDraftParser::parseDraft(const tinyjson::element &json) const
             return draft;
         }
 
-        draft.output = new slot[draft.numOutput];
+        draft.output.resize(draft.numOutput);
     }
 
-    if (json.contains("inputTypes"))
+    if (json.contains("Types"))
     {
-        parseArray(draft.input, draft.numInput, json["inputTypes"]);
+        parseArray(draft.possibleTypes, json["Types"]);
     }
 
-    if (json.contains("outputTypes"))
-    {
-
-        parseArray(draft.output, draft.numOutput, json["outputTypes"]);
-    }
 
     return draft;
 }

@@ -3,6 +3,7 @@
 
 #include "slot.hpp"
 #include "node_type.hpp"
+#include <vector>
 
 struct node_draft
 {
@@ -10,8 +11,9 @@ struct node_draft
     node_type type;
     int32_t numInput;
     int32_t numOutput;
-    slot * input;
-    slot * output;
+    std::vector<slot_type> possibleTypes;
+    std::vector<slot> input;
+    std::vector<slot> output;
 };
 
 #endif

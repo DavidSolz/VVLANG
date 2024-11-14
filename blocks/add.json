@@ -1,21 +1,23 @@
 {
-    "label": "Add",
-    "type": "operator",
-    "numInputs": 2,
-    "inputTypes": [
-        "generic",
-        "generic"
+    "Label": "Add",
+    "Type": "operator",
+    "Inputs": 2,
+    "Outputs": 1,
+    "Types": [
+        "double",
+        "float",
+        "ulong",
+        "uinteger",
+        "ushort",
+        "ubyte",
+        "long",
+        "integer",
+        "short",
+        "byte"
     ],
-    "numOutputs": 1,
-    "outputTypes": [
-        "generic"
-    ],
-    "codes": [
+    "Codes": [
         {
             "CXX": "{placeholder_1} + {placeholder_2}"
-        },
-        {
-            "PYTHON": "{placeholder_1} + {placeholder_2}"
         }
     ]
 }
