@@ -14,7 +14,7 @@ class NodeDraftParser
 {
 private:
 
-    void parseArray(slot * array, const size_t & size, const tinyjson::element& json) const;
+    void parseArray(std::vector<slot_type> &array, const tinyjson::element& json) const;
 
     node_type parseNodeType(const std::string & type) const;
 
