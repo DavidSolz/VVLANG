@@ -4,6 +4,7 @@
     "Inputs": 2,
     "Outputs": 1,
     "Types": [
+        "generic",
         "double",
         "float",
         "ulong",

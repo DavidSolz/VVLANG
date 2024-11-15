@@ -4,6 +4,7 @@
 #include <iostream>
 #include <list>
 #include <unordered_map>
+#include <algorithm>
 
 #include "node.hpp"
 #include "link.hpp"
@@ -17,7 +18,7 @@ private:
 
     DeductionPolicy policy;
 
-    int32_t nodeCounter;
+    int32_t nodeCounter = 0;
 
     Graph(const Graph &graph) = delete;
 

@@ -2,8 +2,24 @@
 
 DeductionPolicy::DeductionPolicy()
 {
-    this->defaultType = slot_type::INTEGER;
-    this->typePriority = {{slot_type::FLOAT, 3}, {slot_type::INTEGER, 2}, {slot_type::BYTE, 1}, {slot_type::STRING, 0}};
+    this->defaultType = slot_type::GENERIC;
+    this->typePriority = {
+        {slot_type::FLOAT, 3},
+        {slot_type::FLOAT2, 3},
+        {slot_type::FLOAT4, 3},
+        {slot_type::FLOAT8, 3},
+        {slot_type::DOUBLE, 2},
+        {slot_type::LONG, 2},
+        {slot_type::ULONG, 2},
+        {slot_type::SHORT, 2},
+        {slot_type::USHORT, 2},
+        {slot_type::INTEGER, 2},
+        {slot_type::UINTEGER, 2},
+        {slot_type::BYTE, 1},
+        {slot_type::UBYTE, 1},
+        {slot_type::STRING, 0},
+        {slot_type::GENERIC, 0}
+        };
 }
 
 void DeductionPolicy::setMode(const deduction_type &mode)
@@ -42,7 +58,7 @@ slot_type DeductionPolicy::deduceStrictType(const std::vector<slot_type> &first,
 slot_type DeductionPolicy::deduceCoerciveType(const std::vector<slot_type> &first, const std::vector<slot_type> &second) const
 {
     slot_type bestType = defaultType;
-    int highestPriority = -1;
+    int32_t highestPriority = -1;
 
     for (const auto &typeA : first)
     {
@@ -80,7 +96,7 @@ slot_type DeductionPolicy::deduceGenericFallbackType(const std::vector<slot_type
 slot_type DeductionPolicy::deduceCustomPriorityType(const std::vector<slot_type> &first, const std::vector<slot_type> &second) const
 {
     slot_type bestType = defaultType;
-    int highestPriority = -1;
+    int32_t highestPriority = -1;
 
     for (const auto &typeA : first)
     {
@@ -90,7 +106,7 @@ slot_type DeductionPolicy::deduceCustomPriorityType(const std::vector<slot_type>
             if( typeA == typeB )
             {
                 int32_t priority = typePriority.at(typeA);
-                if (priority > highestPriority)
+                if (priority >= highestPriority)
                 {
                     bestType = typeA;
                     highestPriority = priority;

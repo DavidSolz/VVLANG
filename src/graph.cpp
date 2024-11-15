@@ -6,13 +6,7 @@ bool Graph::checkNodeValidity(const id_pair &pair) const
 
     if (selectedNode == nodes.end())
     {
-        std::cerr << "Error: Node " + std::to_string(pair.parent) + " does not exist in graph context" << std::endl;
-        return false;
-    }
-
-    if (pair.child < 0 or pair.child > selectedNode->second.draft->numInput)
-    {
-        std::cerr << "Error: Invalid slot inside node " + std::to_string(pair.parent) << std::endl;
+        std::cerr << "Error: Node " + std::to_string(pair.parent) + " does not exist" << std::endl;
         return false;
     }
 
@@ -46,23 +40,52 @@ bool Graph::linkRequest(const id_pair &from, const id_pair &to)
     }
 
     node &first = nodes[from.parent];
+
+    if (first.draft->numOutput <= from.child)
+    {
+        std::cerr << "Error: Invalid number of output slots: " << first.draft->numOutput << std::endl;
+        return false;
+    }
+
     node &second = nodes[to.parent];
+
+    if (second.draft->numInput <= to.child)
+    {
+        std::cerr << "Error: Invalid number of input slots: " << second.draft->numInput << std::endl;
+        return false;
+    }
 
     slot_type deducedType = policy.deduceType(first.draft->possibleTypes, second.draft->possibleTypes);
 
+    const char *typeNames[NUM_SLOT_TYPES] = SLOT_TYPE_STR;
+    std::cout << "Selected: " << typeNames[deducedType] << " as most compatible type" << std::endl;
+
     if (deducedType == policy.getDefaultType())
     {
-        std::cerr << "Error: no compatible types found." << std::endl;
+        std::cerr << "Error: No compatible types found." << std::endl;
         return false;
     }
+
+    link l = (link){from, to};
 
     first.output[from.child].type = deducedType;
     second.input[to.child].type = deducedType;
 
-    link l = (link){from, to};
+    std::list<link> &currentConnections = links[from.parent];
+
+    bool found = std::find_if(currentConnections.begin(), currentConnections.end(),
+                              [&l](const auto &connection)
+                              {
+                                  return connection.hash() == l.hash();
+                              }) != currentConnections.end();
+
+    if (found == true)
+    {
+        std::cerr << "Error: Link already exist" << std::endl;
+        return false;
+    }
 
     links[from.parent].push_back(l);
-    // links[to.parent].push_back(l); // Need to consider if edge must be bi-directional
 
     return true;
 }

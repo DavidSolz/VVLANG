@@ -1,7 +1,7 @@
 {
-    "Label": "Substract",
-    "Type": "operator",
-    "Inputs": 2,
+    "Label": "Value",
+    "Type": "constant",
+    "Inputs": 0,
     "Outputs": 1,
     "Types": [
         "double",
@@ -13,11 +13,15 @@
         "long",
         "integer",
         "short",
-        "byte"
+        "byte",
+        "string",
+        "vec2",
+        "vec4",
+        "vec8"
     ],
     "Codes": [
         {
-            "CXX": "{placeholder_1} - {placeholder_2}"
+            "CXX": "{placeholder_1}"
         }
     ]
 }

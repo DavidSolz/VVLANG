@@ -1,12 +1,13 @@
 #ifndef SLOT_TYPE_HPP
 #define SLOT_TYPE_HPP
 
-#define SLOT_TYPE_STR {"generic", "byte", "integer", "short", "long", "float", "double", "ubyte", "uinteger", "ushort", "ulong", "string", "vec2", "vec4", "vec8"}
+#define SLOT_TYPE_STR {"generic", "invalid", "byte", "integer", "short", "long", "float", "double", "ubyte", "uinteger", "ushort", "ulong", "string", "vec2", "vec4", "vec8"}
 
 enum slot_type
 {
     /* SPECIAL */
     GENERIC,
+    INVALID,
 
     /* SIGNED */
     BYTE,
